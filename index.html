@@ -14,14 +14,14 @@
     <link rel="canonical" href="https://kushsharma.vercel.app/">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kushsharma.vercel.app/"> 
+    <meta property="og:url" content="https://kushsharma.vercel.app/">
     <meta property="og:title" content="Kush Sharma – Full Stack Developer">
     <meta property="og:description"
         content="Explore the creative work and real-world projects by Kush Sharma, a full-stack developer blending AI, design, and technology.">
-    <meta property="og:image" content="https://kushsharma.dev/og-image.jpg"> 
+    <meta property="og:image" content="https://kushsharma.dev/og-image.jpg">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://kushsharma.vercel.app/"> 
+    <meta name="twitter:url" content="https://kushsharma.vercel.app/">
     <meta name="twitter:title" content="Kush Sharma – Full Stack Developer">
     <meta name="twitter:description"
         content="Explore the creative work and real-world projects by Kush Sharma, a full-stack developer blending AI, design, and technology.">
@@ -87,6 +87,13 @@
             }
         }
     </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+    <script type="text/javascript">
+            (function () {
+                emailjs.init('XbDQC8syYTV-50Pjv');
+            })();
+    </script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
@@ -240,10 +247,10 @@
                             Technologist</span>
                     </div>
 
-                    <button
-                        class="bg-accent text-white px-6 py-2 rounded-md border-3 border-black shadow-brutal-sm hover:shadow-brutal-accent transition-all duration-200">
+                    <a href="./resume.pdf" download
+                        class="bg-accent text-white px-6 py-2 rounded-md border-3 border-black shadow-brutal-sm hover:shadow-brutal-accent transition-all duration-200 inline-block text-center">
                         Download Resume
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Stats Card -->
@@ -682,27 +689,34 @@
                 <!-- Contact Form -->
                 <div class="bg-white p-6 rounded-xl border-3 border-black shadow-brutal">
                     <h3 class="text-xl font-bold mb-4">Send Me a Message</h3>
-                    <form class="space-y-4">
+                    <form id="contact-form" class="space-y-4">
                         <div>
                             <label for="name" class="block text-sm font-medium mb-1">Name</label>
-                            <input type="text" id="name"
-                                class="w-full px-4 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent">
+                            <input type="text" id="name" name="from_name"
+                                class="w-full px-4 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                                required>
                         </div>
                         <div>
                             <label for="email" class="block text-sm font-medium mb-1">Email</label>
-                            <input type="email" id="email"
-                                class="w-full px-4 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent">
+                            <input type="email" id="email" name="from_email"
+                                class="w-full px-4 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                                required>
                         </div>
                         <div>
                             <label for="message" class="block text-sm font-medium mb-1">Message</label>
-                            <textarea id="message" rows="4"
-                                class="w-full px-4 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"></textarea>
+                            <textarea id="message" name="message" rows="4"
+                                class="w-full px-4 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                                required></textarea>
                         </div>
                         <button type="submit"
                             class="bg-accent text-white px-6 py-2 rounded-md border-3 border-black shadow-brutal-sm hover:shadow-brutal-accent transition-all duration-200">
                             Send Message
                         </button>
                     </form>
+                    <div id="notification"
+                        class="hidden fixed bottom-5 right-5 bg-accent text-white px-4 py-2 rounded shadow-brutal-sm border-2 border-black">
+                        Message sent successfully!
+                    </div>
                 </div>
             </div>
         </section>
@@ -756,6 +770,29 @@
                 }
             });
         });
+        document.getElementById('contact-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            emailjs.sendForm('service_kfth91r', 'template_xdv9s4p', this)
+                .then(function () {
+                    showNotification('Message sent successfully!');
+                    document.getElementById('contact-form').reset();
+                }, function (error) {
+                    console.error('FAILED...', error);
+                    showNotification('Failed to send message. Please try again later.');
+                });
+        });
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.remove('hidden');
+
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 3000);
+        }
+
     </script>
 </body>
 
